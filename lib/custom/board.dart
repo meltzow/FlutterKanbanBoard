@@ -1,15 +1,13 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kanban_board/constants.dart';
 import 'package:kanban_board/draggable/draggable_state.dart';
 import 'package:kanban_board/draggable/presentation/dragged_card.dart';
+
 import '../Provider/provider_list.dart';
-import '../models/board_list.dart' as board_list;
 import '../models/inputs.dart';
 import 'board_list.dart';
-import 'text_field.dart';
 
 class KanbanBoard extends StatefulWidget {
   const KanbanBoard(
@@ -323,145 +321,23 @@ class _BoardState extends ConsumerState<Board> {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                                 children: boardProv.board.lists
-                                    .map(
-                                        (e) =>
-                                            boardProv.board.lists.indexOf(e) !=
-                                                    boardProv.board.lists
-                                                            .length -
-                                                        1
-                                                ? BoardList(
+                                    .map((e) =>
+                                        boardProv.board.lists.indexOf(e) !=
+                                                boardProv.board.lists.length - 1
+                                            ? BoardList(
+                                                index: boardProv.board.lists
+                                                    .indexOf(e),
+                                              )
+                                            : Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  BoardList(
                                                     index: boardProv.board.lists
                                                         .indexOf(e),
-                                                  )
-                                                : Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      BoardList(
-                                                        index: boardProv
-                                                            .board.lists
-                                                            .indexOf(e),
-                                                      ),
-                                                      boardListProv.newList
-                                                          ? Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                top: 20,
-                                                                left: 30,
-                                                              ),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                bottom: 20,
-                                                              ),
-                                                              width: 300,
-                                                              color: const Color
-                                                                  .fromARGB(
-                                                                255,
-                                                                247,
-                                                                248,
-                                                                252,
-                                                              ),
-                                                              child: Wrap(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    height: 50,
-                                                                    width: 300,
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      children: [
-                                                                        IconButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            setState(() {
-                                                                              boardListProv.newList = false;
-                                                                              boardProv.newCardState.textController.clear();
-                                                                            });
-                                                                          },
-                                                                          icon:
-                                                                              const Icon(Icons.close),
-                                                                        ),
-                                                                        IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              setState(() {
-                                                                                boardListProv.newList = false;
-                                                                                boardProv.board.lists.add(board_list.BoardList(
-                                                                                  width: 300,
-                                                                                  scrollController: ScrollController(),
-                                                                                  items: [],
-                                                                                  title: boardProv.newCardState.textController.text,
-                                                                                ));
-                                                                                boardProv.newCardState.textController.clear();
-                                                                              });
-                                                                            },
-                                                                            icon:
-                                                                                const Icon(Icons.done))
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                      width:
-                                                                          300,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      margin: const EdgeInsets
-                                                                              .only(
-                                                                          top:
-                                                                              20,
-                                                                          right:
-                                                                              10,
-                                                                          left:
-                                                                              10),
-                                                                      child:
-                                                                          const TField()),
-                                                                ],
-                                                              ),
-                                                            )
-                                                          : GestureDetector(
-                                                              onTap: () {
-                                                                if (boardProv
-                                                                        .newCardState
-                                                                        .isFocused ==
-                                                                    true) {
-                                                                  ref
-                                                                      .read(ProviderList
-                                                                          .cardProvider)
-                                                                      .saveNewCard();
-                                                                }
-                                                                boardListProv
-                                                                        .newList =
-                                                                    true;
-                                                                setState(() {});
-                                                              },
-                                                              child: Container(
-                                                                  height: 50,
-                                                                  width: 300,
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 10,
-                                                                      left: 20),
-                                                                  decoration: BoxDecoration(
-                                                                      color: Colors
-                                                                          .transparent,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              6)),
-                                                                  child:
-                                                                      DottedBorder(
-                                                                    child: Center(
-                                                                        child: Text(
-                                                                            "Add List",
-                                                                            style:
-                                                                                widget.textStyle)),
-                                                                  )),
-                                                            )
-                                                    ],
-                                                  ))
+                                                  ),
+                                                ],
+                                              ))
                                     .toList()),
                           ),
                         ),
